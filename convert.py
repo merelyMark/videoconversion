@@ -6,7 +6,7 @@ aud_command = ' -c:a copy '
 meta_command = ' -map_metadata 0 '
 FIX_DATETIME = True
 CONVERT_720 = True
-IN_DIR = './videos/'
+IN_DIR = './'
 OUT_DIR = './720/'
 TEST_CONVERT = False
 TEST_DATETIME = False
@@ -62,7 +62,11 @@ def convert_720(filename, outfile):
         if FIX_DATETIME:
             fix_datetime(filename, outfile)
 
-
+cnt = 0
 for filename in os.listdir(IN_DIR):
-    outfile = OUT_DIR + filename
-    convert_720(filename, outfile)    
+    if filename.endswith(".mp4"):
+        cnt += 1
+        outfile = OUT_DIR + filename
+        convert_720(filename, outfile)    
+
+print "Finished # " + str(cnt)
