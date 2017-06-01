@@ -23,7 +23,7 @@ def fix_datetime(filename, outfile):
     out_st = os.stat(outfile)
     out_atime = out_st[ST_MTIME]
     if (TEST_DATETIME):
-        print time.ctime(out_atime) + ' ' + time.ctime(in_mtime)
+        print (time.ctime(out_atime) + ' ' + time.ctime(in_mtime))
     else:
         os.utime(outfile, (out_atime, in_mtime))
 
@@ -38,7 +38,7 @@ def convert_720(filename, outfile):
         p = subprocess.Popen(info_command, stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
         s, err = p.communicate()
 
-        tups = [item for item in err.split(' ') if item.strip()]
+        tups = [item for item in err.decode('utf8').split(' ') if item.strip()]
         if CONVERT_720:
             for tup in tups:
                 if(pt.match(tup)):
@@ -46,7 +46,7 @@ def convert_720(filename, outfile):
                     
                     if (len(tup) > 0 and int(float(tup[0])) > 0):
                         if (TEST_CONVERT):
-                            print output_command
+                            print( output_command )
                         #go ahead and convert it to 720
                         else:
                             np = subprocess.Popen(output_command, shell=True)
@@ -57,7 +57,7 @@ def convert_720(filename, outfile):
                             break
                 #print tup
     else:
-        print 'ALREADY EXISTS: ' + outfile
+        print ('ALREADY EXISTS: ' + outfile)
         #fix the date/time stamp
         if FIX_DATETIME:
             fix_datetime(filename, outfile)
@@ -69,4 +69,4 @@ for filename in os.listdir(IN_DIR):
         outfile = OUT_DIR + filename
         convert_720(filename, outfile)    
 
-print "Finished # " + str(cnt)
+print( "Finished # " + str(cnt) )
