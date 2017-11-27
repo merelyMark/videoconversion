@@ -26,7 +26,7 @@ def fix_datetime(filename, outfile):
     out_st = os.stat(outfile)
     out_atime = out_st[ST_MTIME]
     if (TEST_DATETIME):
-        print( time.ctime(out_atime) + ' ' + time.ctime(in_mtime) )
+        print (time.ctime(out_atime) + ' ' + time.ctime(in_mtime))
     else:
         os.utime(outfile, (out_atime, in_mtime))
 
