@@ -78,4 +78,4 @@ for resolution in resolutions:
 
     print ("Finished # " + str(cnt) )
 
-print ("Total converted: " tot_cnt)
+print ("Total converted: " + str(tot_cnt))
