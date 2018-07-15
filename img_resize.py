@@ -2,23 +2,15 @@ import os
 import sys
 from PIL import Image
 
-def resize(folder, fileName, factor):
-    filePath = os.path.join(folder, fileName)
-    try:
-        im = Image.open(filePath)
-        print(filePath)
-        w, h  = im.size
-        saveFilename = os.path.join(os.getcwd(), fileName)
+def resize(filePath, factor, saveFilename):
+    im = Image.open(filePath)
+    print(filePath)
+    w, h  = im.size
 
-        if (not os.path.isfile(saveFilename)):
-            newIm = im.resize((int(w*factor), int(h*factor)))
-            # i am saving a copy, you can overrider orginal, or save to other folder
-            #print(saveFilename) 
-            newIm.save(saveFilename)
-        else:
-            print(saveFilename + " already exists.")
-    except OSError as err:
-        print("Error, could not convert " + filePath + " " + str(err))
+    newIm = im.resize((int(w*factor), int(h*factor)))
+    # i am saving a copy, you can overrider orginal, or save to other folder
+    #print(saveFilename) 
+    newIm.save(saveFilename)
 def bulkResize(imageFolder, factor):
     imgExts = ["png", "bmp", "jpg"]
     for path, dirs, files in os.walk(imageFolder):
@@ -27,7 +19,15 @@ def bulkResize(imageFolder, factor):
             if ext not in imgExts:
                 continue
 
-            resize(path, fileName, factor)
+            saveFilename = os.path.join(os.getcwd(), fileName)
+            if (not os.path.isfile(saveFilename)):
+                try:
+                    filePath = os.path.join(path, fileName)
+                    resize(filePath, factor, saveFilename)
+                except (OSError, IOError) as err:
+                    print("Error, could not convert " + filePath + " " + str(err))
+            else:
+                print(saveFilename + " already exists.")
 
 if __name__ == "__main__":
     imageFolder=sys.argv[1] # first arg is path to image folder
